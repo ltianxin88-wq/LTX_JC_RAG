@@ -21,5 +21,5 @@ jobs:
           outputs: type=local,dest=dist
       - uses: actions/upload-artifact@v4
         with:
-          name: jczte-dsh-knowledge-package
+          name: ltx-jc-rag-package
           path: dist/*.tgz
