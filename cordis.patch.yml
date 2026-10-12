@@ -1,0 +1,14 @@
+# Install this package as one DSH profile bundle for Ltx JC RAG.
+# Default mode is local-only; remote can be configured later for a Ltx JC RAG server.
+- insert:
+    - id: ltx-jc-rag
+      name: 'ltx-jc-rag'
+      config:
+        backend: local
+        databasePath: !!js dshHomePath('ltx-jc-rag/knowledge.sqlite')
+        connectionPath: !!js dshHomePath('ltx-jc-rag/connection.json')
+        exposeApi: false
+        exposeWeb: true
+        webPath: /ltx-jc-rag
+        apiPrefix: /ltx-jc-rag-api/v1
+        extractionEnabled: true
