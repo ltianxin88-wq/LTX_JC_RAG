@@ -1,6 +1,6 @@
 {
   "name": "ltx-jc-rag",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Ltx JC RAG local knowledge base plugin for DeepSeek Harness, with scoped recall, controlled write-back, and a Web management console",
   "keywords": [
     "deepseek-harness",

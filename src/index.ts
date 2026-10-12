@@ -49,11 +49,10 @@ export function apply(ctx: Context, config: KnowledgeConfig): void {
   const runtime = ctx as unknown as RuntimeContextLike
   const resolved = resolveConfig(config)
   runtime.inject?.(['settings'], settingsRuntime => {
-    settingsRuntime.settings?.register(
-      KNOWLEDGE_SETTINGS_NAMESPACE,
-      Schema.object({}),
-      { base: {} },
-    )
+    const register = settingsRuntime.settings?.register
+    if (typeof register === 'function') {
+      register.call(settingsRuntime.settings, KNOWLEDGE_SETTINGS_NAMESPACE, Schema.object({}), { base: {} })
+    }
   })
   const persistedServicePath = serviceSettingsPath(resolved.connectionPath)
   let publicApiEnabled = resolved.exposeApi
@@ -88,7 +87,7 @@ export function apply(ctx: Context, config: KnowledgeConfig): void {
   let activeConnection = initialConnection
   runtime.effect(() => {
     const dispose = runtime.on('session/created', session => {
-    if (session.events.some(event => event.type === 'turn/start')) return
+      if (session.events?.some(event => event.type === 'turn/start')) return
       if (!clientSettings.autoMountDefaultKnowledgeBase) return
       void ensureDefaultSessionMount(provider, session).catch(error => {
         runtime.logger.warn(`ltx-jc-rag: failed to seed default session mount for ${session.id}: ${error instanceof Error ? error.message : String(error)}`)

@@ -21,6 +21,12 @@ export interface SessionLike {
   events: readonly SessionEventLike[]
 }
 
+/** Session creation can arrive before the host has hydrated its event log. */
+export interface SessionCreatedLike {
+  id: string
+  events?: readonly SessionEventLike[]
+}
+
 export interface AgentLike {
   session: SessionLike
 }
@@ -118,7 +124,7 @@ export interface RuntimeContextLike {
     error(message: unknown): void
   }
   on(name: 'session/event', listener: (session: SessionLike, event: SessionEventLike) => void): () => void
-  on(name: 'session/created', listener: (session: SessionLike) => void): () => void
+  on(name: 'session/created', listener: (session: SessionCreatedLike) => void): () => void
   on(name: 'agent/pre-step', listener: (
     payload: PreStepPayload,
     next: () => Promise<PreStepDecision>,

@@ -335,7 +335,8 @@ test('plugin auto-mounts the default knowledge base for blank new sessions witho
   const created = listeners.get('session/created')
   assert.equal(typeof created, 'function')
 
-  await created({ id: 'blank-session', header: {}, events: [] })
+  // DSH can emit session/created before it hydrates the event history.
+  await created({ id: 'blank-session' })
   const blankMounts = await observer.listMounts('session', 'blank-session')
   assert.equal(blankMounts.length, 1)
   assert.equal(blankMounts[0].knowledgeBaseId, 'default')
